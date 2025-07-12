@@ -1,6 +1,6 @@
 {
   "name": "asynced",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Async tools for javascript",
   "type": "module",
   "private": false,
