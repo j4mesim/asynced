@@ -17,7 +17,7 @@ export class AsyncQueue<T> {
   }
 
   async enqueue(t: Promise<T> | T) {
-    if (!this._closed) throw new Error("Cannot add to closed queue.");
+    if (this._closed) throw new Error("Cannot add to closed queue.");
     const resolve = this.resolves.shift();
     if (resolve) resolve(t);
     else {
