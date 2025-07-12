@@ -7,7 +7,6 @@ export const newPromisePair = <T>() => {
   return { promise, resolve: resolve! };
 };
 
-
 export interface WithTimestamp<T> {
   data: T;
   at: Date;

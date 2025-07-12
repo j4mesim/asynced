@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    // --- Type Safety & Strictness 
+    // --- Type Safety & Strictness
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noFallthroughCasesInSwitch": true,
@@ -25,5 +25,5 @@
   // Define what files to include in the compilation
   "include": ["src"],
   // You might want to exclude test files, etc., from the main build
-  "exclude": ["node_modules", "dist", "**/*.test.ts","**/*.spec.ts"]
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 }
