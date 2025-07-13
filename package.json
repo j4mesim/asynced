@@ -32,8 +32,8 @@
     "check": "tsc -p ./tsconfig.base.json --noEmit",
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:cjs": "tsc -p tsconfig.cjs.json",
-    "build": "npm run clean && npm run build:esm && npm run build:cjs",
-    "prepublishOnly": "npm run build"
+    "build": "bun run clean && bun run build:esm && bun run build:cjs",
+    "prepublishOnly": "bun run build"
   },
   "dependencies": {
     "date-fns": "^4.1.0",
