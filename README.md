@@ -7,11 +7,11 @@
 
 ## Table of Contents
 
-- [Installation](#installation)  
-- [Quick Start](#quick-start)  
-- [API](#api)  
-- [Examples](#examples)  
-- [Contributing](#contributing)  
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [API](#api)
+- [Examples](#examples)
+- [Contributing](#contributing)
 - [License](#license)
 
 ## Installation
@@ -23,4 +23,3 @@ npm install @j4mesim/asynced
 
 bun add @j4mesim/asynced
 ```
-
