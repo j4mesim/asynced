@@ -1,5 +1,6 @@
 {
-  "name": "asynced",
+  "name": "@j4mesim/asynced",
+  "license": "MIT",
   "version": "0.0.2",
   "description": "Async tools for javascript",
   "type": "module",
