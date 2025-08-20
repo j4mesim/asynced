@@ -1,4 +1,4 @@
-import { newPromisePair } from "../internal";
+import { newPromisePair } from "../internal.js";
 
 export class Mutex {
   private locked = false;
