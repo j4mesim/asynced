@@ -10,6 +10,7 @@
     "lib": ["ESNext", "DOM"],
     "target": "ES2022",
     "moduleResolution": "nodenext",
+    "module": "nodenext",
 
     // --- Library Publishing Essentials ---
     "declaration": true, // Create .d.ts files
