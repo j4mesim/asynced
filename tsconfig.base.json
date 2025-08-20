@@ -9,7 +9,7 @@
     // --- Module & Environment Settings ---
     "lib": ["ESNext", "DOM"],
     "target": "ES2022",
-    "moduleResolution": "bundler",
+    "moduleResolution": "nodenext",
 
     // --- Library Publishing Essentials ---
     "declaration": true, // Create .d.ts files
