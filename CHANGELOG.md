@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4] - 2025-01-15
+
+- Fix AsyncQueue iterator.
+
 ## [0.1.3] - 2025-01-15
 
 - Update AsyncQueue to support AbortSignal API
