@@ -34,6 +34,10 @@ export class AsyncQueue<T> {
     }
   }
 
+  get closed() {
+    return this._closed;
+  }
+
   close() {
     if (this._closed) throw new Error("Cannot close a queue more than once.");
     this._closed = true;
