@@ -72,7 +72,7 @@ export class AsyncQueue<T> {
       pairPromise.finally(() => signal.removeEventListener("abort", onAbort));
     }
 
-    return promise;
+    return pairPromise;
   }
 
   empty() {
@@ -87,17 +87,23 @@ export class AsyncQueue<T> {
     return this.promises.length - this.waiters.size;
   }
 
-  [Symbol.asyncIterator](options?: { signal?: AbortSignal }) {
-    // TODO: Use AsyncIterator.from
+  [Symbol.asyncIterator](options?: {
+    signal?: AbortSignal;
+  }): AsyncIterableIterator<T> {
     return {
-      next: async () => {
+      next: async (): Promise<IteratorResult<T>> => {
         if (options?.signal?.aborted) {
-          return Promise.reject(options.signal.reason);
+          throw options.signal.reason;
         }
-        return this.dequeue(options).then((value) => ({
-          done: this.empty() && this._closed,
-          value,
-        }));
+
+        if (this._closed && this.empty()) {
+          return { done: true, value: undefined };
+        }
+
+        return {
+          done: false,
+          value: await this.dequeue(options),
+        };
       },
       [Symbol.asyncIterator]() {
         return this;
