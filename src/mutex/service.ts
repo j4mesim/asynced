@@ -1,7 +1,7 @@
 import { add, isBefore, type Duration } from "date-fns";
-import type { WithTimestamp } from "../internal";
-import { Mutex } from ".";
-import { validish } from "../simple";
+import type { WithTimestamp } from "../internal.js";
+import { Mutex } from "./single.js";
+import { validish } from "../simple.js";
 
 export type LockKey = string | number | symbol;
 

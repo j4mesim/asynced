@@ -1,10 +1,12 @@
 export const newPromisePair = <T>() => {
   let resolve: (value: T | Promise<T>) => void;
-  const promise = new Promise<T>((r) => {
-    resolve = r;
+  let reject: (reason?: unknown) => void;
+  const promise = new Promise<T>((res, rej) => {
+    resolve = res;
+    reject = rej;
   });
-  // We can be sure `resolve` is assigned here.
-  return { promise, resolve: resolve! };
+  // We can be sure `resolve` and `reject` are assigned here.
+  return { promise, resolve: resolve!, reject: reject! };
 };
 
 export interface WithTimestamp<T> {
