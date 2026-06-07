@@ -94,23 +94,23 @@ await queue.dequeue({ signal: controller.signal });
 
 #### Constructor options
 
-| Option | Type | Description |
-| ------ | ---- | ----------- |
-| `maxSize` | `number` | Max buffered items. Producers block when full. |
-| `signal` | `AbortSignal` | Cancels all blocked enqueue and dequeue calls. |
+| Option    | Type          | Description                                    |
+| --------- | ------------- | ---------------------------------------------- |
+| `maxSize` | `number`      | Max buffered items. Producers block when full. |
+| `signal`  | `AbortSignal` | Cancels all blocked enqueue and dequeue calls. |
 
 #### Instance methods / properties
 
-| Member | Description |
-| ------ | ----------- |
-| `enqueue(value)` | Add an item. Suspends if buffer is full. |
-| `dequeue(options?)` | Remove and return the next item. Suspends if empty. |
-| `close()` | Signal that no more items will be enqueued. |
-| `size` | Number of buffered items. |
-| `empty()` | `true` if no buffered items. |
-| `blocked()` | `true` if consumers are waiting on an empty queue. |
-| `closed` | `true` after `close()` has been called. |
-| `[Symbol.asyncIterator]` | Iterate until the queue is closed and empty. |
+| Member                   | Description                                         |
+| ------------------------ | --------------------------------------------------- |
+| `enqueue(value)`         | Add an item. Suspends if buffer is full.            |
+| `dequeue(options?)`      | Remove and return the next item. Suspends if empty. |
+| `close()`                | Signal that no more items will be enqueued.         |
+| `size`                   | Number of buffered items.                           |
+| `empty()`                | `true` if no buffered items.                        |
+| `blocked()`              | `true` if consumers are waiting on an empty queue.  |
+| `closed`                 | `true` after `close()` has been called.             |
+| `[Symbol.asyncIterator]` | Iterate until the queue is closed and empty.        |
 
 ---
 
@@ -137,11 +137,11 @@ await mutex.run(async () => {
 });
 ```
 
-| Member | Description |
-| ------ | ----------- |
-| `acquire()` | Waits for the lock, returns a `release` function. |
+| Member          | Description                                               |
+| --------------- | --------------------------------------------------------- |
+| `acquire()`     | Waits for the lock, returns a `release` function.         |
 | `run(callback)` | Acquires, runs the callback, then releases automatically. |
-| `isLocked` | `true` if currently held. |
+| `isLocked`      | `true` if currently held.                                 |
 
 ---
 
@@ -175,12 +175,12 @@ await rwmutex.runRead(async () => readSharedState());
 await rwmutex.runWrite(async () => mutateSharedState());
 ```
 
-| Member | Description |
-| ------ | ----------- |
-| `acquireRead()` | Waits for read access, returns a `releaseRead` function. |
-| `acquireWrite()` | Waits for exclusive write access, returns a `releaseWrite` function. |
-| `runRead(callback)` | Acquires read lock, runs callback, releases. |
-| `runWrite(callback)` | Acquires write lock, runs callback, releases. |
+| Member               | Description                                                          |
+| -------------------- | -------------------------------------------------------------------- |
+| `acquireRead()`      | Waits for read access, returns a `releaseRead` function.             |
+| `acquireWrite()`     | Waits for exclusive write access, returns a `releaseWrite` function. |
+| `runRead(callback)`  | Acquires read lock, runs callback, releases.                         |
+| `runWrite(callback)` | Acquires write lock, runs callback, releases.                        |
 
 ---
 
@@ -210,11 +210,11 @@ Unused mutexes accumulate over time. Call `prune` periodically to remove locks t
 locks.prune({ minutes: 10 });
 ```
 
-| Member | Description |
-| ------ | ----------- |
-| `acquire(resource)` | Acquires lock(s) for the given key(s), returns a `release` function. |
-| `run(resource, callback)` | Acquires, runs callback, releases automatically. |
-| `prune(ttl)` | Removes idle locks last used before `ttl` ago. |
+| Member                    | Description                                                          |
+| ------------------------- | -------------------------------------------------------------------- |
+| `acquire(resource)`       | Acquires lock(s) for the given key(s), returns a `release` function. |
+| `run(resource, callback)` | Acquires, runs callback, releases automatically.                     |
+| `prune(ttl)`              | Removes idle locks last used before `ttl` ago.                       |
 
 ---
 
@@ -257,14 +257,14 @@ Lightweight null/undefined guards with TypeScript narrowing.
 ```ts
 import { validish, invalidish, isdefined } from "@j4mesim/asynced";
 
-validish(null)      // false  — narrows away null | undefined
-validish("hello")   // true
+validish(null); // false  — narrows away null | undefined
+validish("hello"); // true
 
-invalidish(null)    // true   — narrows to null | undefined
-invalidish(0)       // false
+invalidish(null); // true   — narrows to null | undefined
+invalidish(0); // false
 
-isdefined(undefined) // false — narrows away undefined only
-isdefined(null)      // true
+isdefined(undefined); // false — narrows away undefined only
+isdefined(null); // true
 ```
 
 ## License
