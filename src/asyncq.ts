@@ -1,19 +1,30 @@
 import { newPromisePair } from "./internal.js";
+import { validish } from "./simple.js";
 
 type Waiter<T> = {
   resolve: (value: T | Promise<T>) => void;
   reject: (reason?: unknown) => void;
 };
 
+type EnqueueWaiter<T> = {
+  value: T | Promise<T>;
+  resolve: () => void;
+  reject: (reason?: unknown) => void;
+};
+
 export class AsyncQueue<T> {
   private promises: Promise<T>[];
   private waiters: Set<Waiter<T>>;
+  private enqueuers: EnqueueWaiter<T>[];
   private _closed = false;
+  private maxSize?: number;
 
-  constructor(options?: { signal?: AbortSignal }) {
+  constructor(options?: { signal?: AbortSignal; maxSize?: number }) {
     this.waiters = new Set();
     this.promises = [];
+    this.enqueuers = [];
     this._closed = false;
+    this.maxSize = options?.maxSize;
 
     if (options?.signal) {
       if (options.signal.aborted) {
@@ -27,6 +38,10 @@ export class AsyncQueue<T> {
               waiter.reject(options.signal?.reason),
             );
             this.waiters.clear();
+            this.enqueuers.forEach((enqueuer) =>
+              enqueuer.reject(options.signal?.reason),
+            );
+            this.enqueuers = [];
           },
           { once: true },
         );
@@ -45,6 +60,14 @@ export class AsyncQueue<T> {
 
   async enqueue(t: Promise<T> | T) {
     if (this._closed) throw new Error("Cannot add to closed queue.");
+
+    if (validish(this.maxSize) && this.promises.length >= this.maxSize) {
+      await new Promise<void>((resolve, reject) => {
+        this.enqueuers.push({ value: t, resolve, reject });
+      });
+      return;
+    }
+
     const waiter: Waiter<T> | undefined = this.waiters.values().next().value;
     if (waiter) {
       this.waiters.delete(waiter);
@@ -56,12 +79,25 @@ export class AsyncQueue<T> {
     }
   }
 
+  private _processNextEnqueuer() {
+    const enqueuer = this.enqueuers.shift();
+    if (!enqueuer) return;
+
+    const pair = newPromisePair<T>();
+    this.promises.push(pair.promise);
+    pair.resolve(enqueuer.value);
+    enqueuer.resolve();
+  }
+
   async dequeue(options?: { signal?: AbortSignal }) {
     const signal = options?.signal;
     if (signal?.aborted) throw new Error(signal.reason);
 
     const promise = this.promises.shift();
-    if (promise) return promise;
+    if (promise) {
+      this._processNextEnqueuer();
+      return promise;
+    }
 
     const { promise: pairPromise, ...waiter } = newPromisePair<T>();
     this.waiters.add(waiter);
